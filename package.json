@@ -1,0 +1,9 @@
+{
+  "name": "http4js-eg",
+  "version": "0.0.1",
+  "dependencies": {
+    "http4js": "1.0.5",
+    "ts-node": "4.1.0",
+    "typescript": "2.3.4"
+  }
+}
