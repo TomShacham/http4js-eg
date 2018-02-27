@@ -4,7 +4,7 @@
   },
   "include": [
     "src/**/*",
-    "index.ts"
+    "index"
   ],
   "exclude": [
     "node_modules"
