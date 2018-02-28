@@ -5,8 +5,6 @@ main();
 
 function main() {
     let config = {port: 3000};
-    console.log("Running with config:");
-    console.log(config);
     let app = new App();
     new Stack(config).run(app.routes());
 };

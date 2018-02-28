@@ -8,7 +8,7 @@
     "app": "tsc; node index.js"
   },
   "dependencies": {
-    "http4js": "1.0.7"
+    "http4js": "1.0.8"
   },
   "devDependencies": {
     "ts-node": "4.1.0",

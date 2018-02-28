@@ -11,12 +11,18 @@ export class App {
     routes(): ResourceRoutingHttpHandler {
         return getTo("/", (req) => {
             return new Response(200, new Body("Hello, world!"))
-        }).withFilter((handler) => (req) => {
-            if (handler(req).status == 404) {
-                return new Response(404, new Body("Page not found"));
-            } else {
-                handler(req);
-            }
-        });
+        })
+            .withHandler("/friends", "GET", (req) => {
+                return new Response(200, new Body("<p>" + friends.join("</p><p>") + "</p>"))
+            })
+            .withFilter((handler) => (req) => {
+                if (handler(req).status == 404) {
+                    return new Response(404, new Body("Page not found"));
+                } else {
+                    return handler(req);
+                }
+            });
     }
 }
+
+let friends = ["tosh", "bosh", "losh"];
