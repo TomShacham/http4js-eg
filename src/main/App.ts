@@ -13,7 +13,9 @@ export class App {
             return new Response(200, new Body("Hello, world!"))
         })
             .withHandler("/friends", "GET", (req) => {
-                return new Response(200, new Body("<p>" + friends.join("</p><p>") + "</p>"))
+                let queries = req.queries;
+                let filteredFriends = friends.filter(f => f.indexOf(queries["name"]) > -1);
+                return new Response(200, new Body("<p>" + filteredFriends.join("</p><p>") + "</p>"))
             })
             .withHandler("/friends/{name}", "GET", (req) => {
                 let name = req.pathParams["name"];
