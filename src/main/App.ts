@@ -12,20 +12,42 @@ export class App {
         return getTo("/", (req) => {
             return new Response(200, new Body("Hello, world!"))
         })
+            .withHandler("/favicon.ico", "GET", (req) => {
+                return new Response(200);
+            })
             .withHandler("/friends", "GET", (req) => {
                 let queries = req.queries;
-                let filteredFriends = friends.filter(f => f.indexOf(queries["name"]) > -1);
-                return new Response(200, new Body("<p>" + filteredFriends.join("</p><p>") + "</p>"))
+                let searchTerm = queries["name"];
+                let filteredFriends = searchTerm
+                    ? friends.filter(f => f.indexOf(searchTerm) > -1)
+                    : friends;
+
+                let html = `<p>${filteredFriends.join("</p><p>")}</p>
+                            <form method="post"><input type="text" name="name"/><input type="submit"></form>`;
+
+                return new Response(200, new Body(html))
             })
+
             .withHandler("/friends/{name}", "GET", (req) => {
                 let name = req.pathParams["name"];
-                return new Response(200, new Body(friends.filter(it => it == name)[0]));
+                let filter = name
+                    ? friends.filter(it => it.indexOf(name) > -1)
+                    : friends;
+                return new Response(200, new Body(filter.join(",")));
             })
+
+            .withHandler("/friends", "POST", (req) => {
+                let newFriend = req.form["name"];
+                friends.push(newFriend);
+                return new Response(302).setHeader("Location", "/friends")
+            })
+
             .withFilter((handler) => (req) => {
-                if (handler(req).status == 404) {
+                let response = handler(req);
+                if (response.status == 404) {
                     return new Response(404, new Body("Page not found"));
                 } else {
-                    return handler(req);
+                    return response;
                 }
             });
     }
