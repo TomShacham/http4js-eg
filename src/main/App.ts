@@ -1,6 +1,14 @@
 import {Body} from "http4js/dist/main/core/Body";
 import {Response} from "http4js/dist/main/core/Response";
 import {getTo, ResourceRoutingHttpHandler} from "http4js/dist/main/core/RoutingHttpHandler";
+import * as Handlebars from "handlebars";
+import * as fs from 'fs';
+
+let render = (templateName, data) => {
+    let source = fs.readFileSync(`./src/templates/${templateName}.hbs`).toString("utf8");
+    let template = Handlebars.compile(source);
+    return template(data);
+};
 
 export class App {
 
@@ -12,9 +20,11 @@ export class App {
         return getTo("/", (req) => {
             return new Response(200, new Body("Hello, world!"))
         })
+        //this is for google chrome
             .withHandler("/favicon.ico", "GET", (req) => {
                 return new Response(200);
             })
+
             .withHandler("/friends", "GET", (req) => {
                 let queries = req.queries;
                 let searchTerm = queries["name"];
@@ -22,8 +32,7 @@ export class App {
                     ? friends.filter(f => f.indexOf(searchTerm) > -1)
                     : friends;
 
-                let html = `<p>${filteredFriends.join("</p><p>")}</p>
-                            <form method="post"><input type="text" name="name"/><input type="submit"></form>`;
+                let html = render("friends", {friends: filteredFriends});
 
                 return new Response(200, new Body(html))
             })
