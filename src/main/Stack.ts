@@ -9,7 +9,7 @@ export class Stack {
 
     run(resourceRoutingHttpHandler: ResourceRoutingHttpHandler) {
         let port = this.config["port"];
-        console.log("Running on port " + port)
+        console.log("Running on port " + port);
         resourceRoutingHttpHandler.asServer(port).start()
     }
 }

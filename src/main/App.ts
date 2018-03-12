@@ -1,8 +1,9 @@
-import {Body} from "http4js/dist/main/core/Body";
-import {Response} from "http4js/dist/main/core/Response";
+import {Body} from "../../../http4js/dist/main/core/Body";
+import {Response} from "../../../http4js/dist/main/core/Response";
 import {getTo, ResourceRoutingHttpHandler} from "http4js/dist/main/core/RoutingHttpHandler";
+import {FriendsDB} from "./FriendDb";
 import * as Handlebars from "handlebars";
-import * as fs from 'fs';
+import * as fs from "fs";
 
 let render = (templateName, data) => {
     let source = fs.readFileSync(`./src/templates/${templateName}.hbs`).toString("utf8");
@@ -12,7 +13,7 @@ let render = (templateName, data) => {
 
 export class App {
 
-    constructor(/*fake db*/) {
+    constructor(friendsDb: FriendsDB) {
         return this;
     }
 
