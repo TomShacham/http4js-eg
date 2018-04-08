@@ -1,10 +1,10 @@
-import {FakeFriendsDB} from "../main/FriendDb";
 import {App} from "../main/App";
 import {Request} from "http4js/dist/main/core/Request";
 import {Response} from "http4js/dist/main/core/Response";
 import {ResourceRoutingHttpHandler} from "http4js/dist/main/core/RoutingHttpHandler";
-import * as fs from 'fs';
+import * as fs from "fs";
 import {equal} from "assert";
+import {FakeFriendsDB} from "../main/FakeFriendsDB";
 
 export class TestApp {
     routes: ResourceRoutingHttpHandler;
@@ -30,7 +30,7 @@ export class TestApp {
         } catch (e) {
             console.log(`Approve: \`cp ${actualfilePath} ${approvalfilePath}\``);
             throw e;
-        };
+        }
     }
 
 }

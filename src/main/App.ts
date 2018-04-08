@@ -1,9 +1,9 @@
 import {Body} from "../../../http4js/dist/main/core/Body";
-import {Response} from "../../../http4js/dist/main/core/Response";
 import {getTo, ResourceRoutingHttpHandler} from "http4js/dist/main/core/RoutingHttpHandler";
 import {FriendsDB} from "./FriendDb";
 import * as Handlebars from "handlebars";
 import * as fs from "fs";
+import {Response} from "http4js/dist/main/core/Response";
 
 let render = (templateName, data) => {
     let source = fs.readFileSync(`./src/templates/${templateName}.hbs`).toString("utf8");
@@ -21,11 +21,6 @@ export class App {
         return getTo("/", (req) => {
             return new Response(200, new Body("Hello, world!"))
         })
-        //this is for google chrome
-            .withHandler("/favicon.ico", "GET", (req) => {
-                return new Response(200);
-            })
-
             .withHandler("/friends", "GET", (req) => {
                 let queries = req.queries;
                 let searchTerm = queries["name"];
@@ -59,7 +54,12 @@ export class App {
                 } else {
                     return response;
                 }
-            });
+            })
+            //this is for google chrome
+            .withHandler("/favicon.ico", "GET", (req) => {
+                return new Response(200);
+            })
+
     }
 }
 

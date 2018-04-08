@@ -2,7 +2,7 @@
   "name": "http4js-eg",
   "version": "0.0.1",
   "scripts": {
-    "test": "mocha src/test/**",
+    "test": "tsc; mocha src/test/**/*.js",
     "build": "tsc",
     "prepublishOnly": "tsc -p ./ --outDir dist/",
     "app": "tsc; node index.js"

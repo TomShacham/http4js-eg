@@ -1,9 +1,9 @@
 import {ResourceRoutingHttpHandler} from "http4js/dist/main/core/RoutingHttpHandler";
 
 export class Stack {
-    config: object;
+    config;
 
-    constructor(config: object = {port: 3000}) {
+    constructor(config = {port: 3000}) {
         this.config = config;
     }
 

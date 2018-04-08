@@ -1,6 +1,6 @@
 import {Stack} from "./src/main/Stack";
 import {App} from "./src/main/App";
-import {RealFriendsDB, FakeFriendsDB} from "./src/main/FriendDb";
+import {RealFriendsDB} from "./src/main/RealFriendsDB";
 
 main();
 

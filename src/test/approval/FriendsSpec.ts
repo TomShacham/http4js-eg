@@ -6,6 +6,6 @@ describe("listing friends", () => {
     it("shows them all unfiltered", () => {
         new TestApp().approve("unfiltered friends",
             new Request("GET", "/friends"))
-    })
+    });
 
 });
