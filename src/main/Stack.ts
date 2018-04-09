@@ -1,4 +1,4 @@
-import {ResourceRoutingHttpHandler} from "http4js/dist/main/core/RoutingHttpHandler";
+import {RoutingHttpHandler} from "http4js/dist/main/core/Routing";
 
 export class Stack {
     config;
@@ -7,10 +7,12 @@ export class Stack {
         this.config = config;
     }
 
-    run(resourceRoutingHttpHandler: ResourceRoutingHttpHandler) {
+    run(routing: RoutingHttpHandler) {
         let port = this.config["port"];
         console.log("Running on port " + port);
-        resourceRoutingHttpHandler.asServer(port).start()
+        routing
+            .asServer(port)
+            .start()
     }
 }
 

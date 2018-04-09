@@ -1,5 +1,6 @@
 import {Friend} from "./Friend";
 
 export interface FriendsDB {
-    friends(): Promise<Array<Friend>>
+    all(): Promise<Array<Friend>>
+    add(friend: Friend): Promise<Friend>
 }

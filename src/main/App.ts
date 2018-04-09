@@ -1,66 +1,70 @@
-import {Body} from "../../../http4js/dist/main/core/Body";
-import {getTo, ResourceRoutingHttpHandler} from "http4js/dist/main/core/RoutingHttpHandler";
-import {FriendsDB} from "./FriendDb";
 import * as Handlebars from "handlebars";
 import * as fs from "fs";
+import {getTo, RoutingHttpHandler} from "http4js/dist/main/core/Routing";
 import {Response} from "http4js/dist/main/core/Response";
+import {FriendsService} from "./FriendsService";
 
-let render = (templateName, data) => {
-    let source = fs.readFileSync(`./src/templates/${templateName}.hbs`).toString("utf8");
-    let template = Handlebars.compile(source);
+const render = (templateName, data) => {
+    const source = fs.readFileSync(`./src/templates/${templateName}.hbs`).toString("utf8");
+    const template = Handlebars.compile(source);
     return template(data);
 };
 
 export class App {
 
-    constructor(friendsDb: FriendsDB) {
+    friends: FriendsService;
+
+    constructor(friends: FriendsService) {
+        this.friends = friends;
         return this;
     }
 
-    routes(): ResourceRoutingHttpHandler {
-        return getTo("/", (req) => {
-            return new Response(200, new Body("Hello, world!"))
+    routes(): RoutingHttpHandler {
+        return getTo("/", () => {
+            return Promise.resolve(new Response(200, "Hello, world!"));
         })
-            .withHandler("/friends", "GET", (req) => {
-                let queries = req.queries;
-                let searchTerm = queries["name"];
-                let filteredFriends = searchTerm
-                    ? friends.filter(f => f.indexOf(searchTerm) > -1)
+            .withHandler("/friends", "GET", async(req) => {
+                const queries = req.queries;
+                const searchTerm = queries["name"];
+                const friends = await this.friends.all();
+                const filteredFriends = searchTerm
+                    ? friends.filter(friend => friend.indexOf(searchTerm) > -1)
                     : friends;
 
-                let html = render("friends", {friends: filteredFriends});
+                const html = render("friends", {friends: filteredFriends.map(f => f.name)});
 
-                return new Response(200, new Body(html))
+                return Promise.resolve(new Response(200, html));
             })
 
-            .withHandler("/friends/{name}", "GET", (req) => {
-                let name = req.pathParams["name"];
-                let filter = name
-                    ? friends.filter(it => it.indexOf(name) > -1)
+            .withHandler("/friends/{name}", "GET", async(req) => {
+                const name = req.pathParams["name"];
+                const friends = await this.friends.all();
+                const filteredFriends = name
+                    ? friends.find(it => it.indexOf(name) > -1)
                     : friends;
-                return new Response(200, new Body(filter.join(",")));
+                return Promise.resolve(new Response(200, filteredFriends.join(",")));
             })
 
-            .withHandler("/friends", "POST", (req) => {
-                let newFriend = req.form["name"];
-                friends.push(newFriend);
+            .withHandler("/friends", "POST", async(req) => {
+                const newFriend = req.form["name"];
+                const saved = await this.friends.add(newFriend);
                 return new Response(302).setHeader("Location", "/friends")
             })
 
             .withFilter((handler) => (req) => {
-                let response = handler(req);
-                if (response.status == 404) {
-                    return new Response(404, new Body("Page not found"));
-                } else {
-                    return response;
-                }
+                return handler(req).then(response => {
+                    if (response.status == 404) {
+                        return Promise.resolve(new Response(404, "Page not found"));
+                    } else {
+                        return response;
+                    }
+                })
             })
             //this is for google chrome
-            .withHandler("/favicon.ico", "GET", (req) => {
-                return new Response(200);
+            .withHandler("/favicon.ico", "GET", () => {
+                return Promise.resolve(new Response(200));
             })
 
     }
 }
 
-let friends = ["tosh", "bosh", "losh"];

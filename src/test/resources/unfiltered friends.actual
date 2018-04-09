@@ -1,5 +1,5 @@
-    <p>tosh</p>
-    <p>bosh</p>
-    <p>losh</p>
+    <p>Tosh</p>
+    <p>Bosh</p>
+    <p>Losh</p>
 
 <form method="post"><input type="text" name="name"/><input type="submit"></form>

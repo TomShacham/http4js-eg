@@ -4,32 +4,34 @@ import {FriendsDB} from "./FriendDb";
 const {Pool} = require('pg');
 
 export class RealFriendsDB implements FriendsDB {
-    private pool = new Pool({
-        user: 'postgres', //env var: PGUSER
-        database: 'postgres', //env var: PGDATABASE
-        password: 'postgres', //env var: PGPASSWORD
-        host: 'localhost', // Server hosting the postgres database
-        port: 5432, //env var: PGPORT
-        max: 1000, // max number of clients in the pool
-        idleTimeoutMillis: 15000 // how long a client is allowed to remain idle before being closed
-    });
+    private pool;
 
     constructor() {
-        this.runMigrations()
+        this.pool = new Pool({
+            user: 'postgres', //env var: PGUSER
+            database: 'postgres', //env var: PGDATABASE
+            password: 'postgres', //env var: PGPASSWORD
+            host: 'localhost', // Server hosting the postgres database
+            port: 5432, //env var: PGPORT
+            max: 100, // max number of clients in the pool
+            idleTimeoutMillis: 15000 // how long a client is allowed to remain idle before being closed
+        });
+        RealFriendsDB.runMigrations();
     }
 
-    async friends(): Promise<Friend[]> {
+    async all(): Promise<Friend[]> {
         const friends = await this.pool.query("select * from friends");
         return friends.rows;
     }
 
-    private toFriends(rows) {
-        return rows.map(it => {
-            return new Friend(it.name)
-        })
+    async add(friend: Friend): Promise<Friend> {
+        const saved = await this.pool.query("insert into friends values($1)", [friend.name]);
+        return saved.rows;
     }
 
-    private runMigrations() {
-
+    private static runMigrations() {
+        const migrations = [
+            "CREATE TABLE IF NOT EXISTS FRIENDS(id serial primary key, name varchar(64) not null)",
+        ];
     }
 }

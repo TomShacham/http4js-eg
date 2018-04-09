@@ -7,7 +7,7 @@ describe("friends service", () => {
 
     it("fetches all friends", async () => {
        let friendsService = new FriendsService(new RealFriendsDB());
-       return friendsService.friends().then(
+       return friendsService.all().then(
            friends => deepEqual(friends, []))
     });
 
