@@ -5,7 +5,6 @@ const {Pool} = require('pg');
 
 export class RealFriendsDB implements FriendsDB {
     private pool;
-
     constructor() {
         this.pool = new Pool({
             user: 'postgres', //env var: PGUSER
@@ -25,8 +24,12 @@ export class RealFriendsDB implements FriendsDB {
     }
 
     async add(friend: Friend): Promise<Friend> {
-        const saved = await this.pool.query("insert into friends values($1)", [friend.name]);
+        const saved = await this.pool.query("insert into friends values(default, $1)", [friend.name]);
         return saved.rows;
+    }
+
+    async deleteAll() {
+        return await this.pool.query("delete from friends");
     }
 
     private static runMigrations() {

@@ -1,14 +1,20 @@
 import {FriendsService} from "../../main/FriendsService";
 import {RealFriendsDB} from "../../main/RealFriendsDB";
-import {equal} from "assert";
 import {deepEqual} from "assert";
+import {Friend} from "../../main/Friend";
 
 describe("friends service", () => {
+    let friendsService = new FriendsService(new RealFriendsDB());
 
-    it("fetches all friends", async () => {
-       let friendsService = new FriendsService(new RealFriendsDB());
-       return friendsService.all().then(
-           friends => deepEqual(friends, []))
+    beforeEach(async() => {
+        await friendsService.deleteAll();
+    });
+
+    it("fetches all friends", async() => {
+        await friendsService.add(new Friend("Tosh"));
+        let allFriends = await friendsService.all();
+
+        deepEqual(allFriends, [new Friend("Tosh")])
     });
 
 });
