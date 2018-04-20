@@ -10,6 +10,13 @@ describe("friends service", () => {
         await friendsService.deleteAll();
     });
 
+    it("adds a friend", async() => {
+        await friendsService.add(new Friend("Tosh"));
+        let allFriends = await friendsService.all();
+
+        deepEqual(allFriends, [new Friend("Tosh")])
+    });
+
     it("fetches all friends", async() => {
         await friendsService.add(new Friend("Tosh"));
         let allFriends = await friendsService.all();

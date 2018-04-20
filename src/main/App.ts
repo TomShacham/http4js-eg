@@ -3,6 +3,7 @@ import * as fs from "fs";
 import {getTo, RoutingHttpHandler} from "http4js/dist/main/core/Routing";
 import {Response} from "http4js/dist/main/core/Response";
 import {FriendsService} from "./FriendsService";
+import {Friend} from "./Friend";
 
 const render = (templateName, data) => {
     const source = fs.readFileSync(`./src/templates/${templateName}.hbs`).toString("utf8");
@@ -28,7 +29,7 @@ export class App {
                 const searchTerm = queries["name"];
                 const friends = await this.friends.all();
                 const filteredFriends = searchTerm
-                    ? friends.filter(friend => friend.indexOf(searchTerm) > -1)
+                    ? friends.filter(friend => friend.name.indexOf(searchTerm) > -1)
                     : friends;
 
                 const html = render("friends", {friends: filteredFriends.map(f => f.name)});
@@ -40,13 +41,14 @@ export class App {
                 const name = req.pathParams["name"];
                 const friends = await this.friends.all();
                 const filteredFriends = name
-                    ? friends.find(it => it.indexOf(name) > -1)
+                    ? friends.filter(friend => friend.name.indexOf(name) > -1)
                     : friends;
-                return Promise.resolve(new Response(200, filteredFriends.join(",")));
+                let html = (filteredFriends.map(friend => friend.name)).join(",");
+                return Promise.resolve(new Response(200, html));
             })
 
             .withHandler("/friends", "POST", async(req) => {
-                const newFriend = req.form["name"];
+                const newFriend = new Friend(req.bodyString().split("=")[1]);
                 const saved = await this.friends.add(newFriend);
                 return new Response(302).setHeader("Location", "/friends")
             })

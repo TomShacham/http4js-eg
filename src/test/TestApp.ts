@@ -27,11 +27,17 @@ export class TestApp {
         const actualfilePath = `./src/test/resources/${testFileName}.actual`;
         fs.writeFileSync(actualfilePath, actual, "utf8");
         const approvalfilePath = `./src/test/resources/${testFileName}.approved`;
-        const expected = fs.readFileSync(approvalfilePath, "utf8");
         try {
+            const expected = fs.readFileSync(approvalfilePath, "utf8");
             equal(actual, expected);
         } catch (e) {
-            console.log(`Approve: \`cp "${actualfilePath}" "${approvalfilePath}"\``);
+            if (e.message.includes("no such file or directory")) {
+                console.log("*** Create file from actual ***");
+                console.log(`cp "${actualfilePath}" "${approvalfilePath}"`);
+            } else {
+                console.log("*** To approve  ***");
+                console.log(`cp "${actualfilePath}" "${approvalfilePath}"`);
+            }
             throw e;
         }
     }

@@ -9,7 +9,7 @@
   },
   "dependencies": {
     "handlebars": "4.0.11",
-    "http4js": "1.2.6",
+    "http4js": "1.2.9",
     "pg": "7.4.1"
   },
   "devDependencies": {

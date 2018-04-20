@@ -10,6 +10,7 @@ export class FriendsService {
 
     async all(): Promise<Friend[]> {
         const results = await this.db.all();
+
         return this.toFriends(results);
     }
 
