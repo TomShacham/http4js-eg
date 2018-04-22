@@ -13,8 +13,7 @@ export class TestApp {
     constructor(){
         const fakeFriendsDB = new FakeFriendsDB();
         const friendsService = new FriendsService(fakeFriendsDB);
-        const app = new App(friendsService);
-        this.routes = app.routes();
+        this.routes = new App(friendsService).routes();
     }
 
     async serve(req: Request): Promise<Response> {

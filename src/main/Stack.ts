@@ -1,4 +1,5 @@
-import {RoutingHttpHandler} from "http4js/dist/main/core/Routing";
+import {NativeServer} from "http4js/dist/main/servers/NativeServer";
+import {App} from "./App";
 
 export class Stack {
     config;
@@ -7,11 +8,12 @@ export class Stack {
         this.config = config;
     }
 
-    run(routing: RoutingHttpHandler) {
+    run(app: App) {
         let port = this.config["port"];
         console.log("Running on port " + port);
-        routing
-            .asServer(port)
+        app
+            .routes()
+            .asServer(new NativeServer(port))
             .start()
     }
 }
