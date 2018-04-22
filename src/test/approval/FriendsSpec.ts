@@ -1,6 +1,5 @@
-import {Request} from "http4js/dist/main/core/Request";
 import {TestApp} from "../TestApp";
-import {Method} from "http4js/dist/main/core/Methods";
+import {Request} from "http4js/dist/core/Request";
 
 describe("listing friends", () => {
 

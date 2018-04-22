@@ -1,5 +1,5 @@
-import {NativeServer} from "http4js/dist/main/servers/NativeServer";
 import {App} from "./App";
+import {NativeServer} from "http4js/dist/servers/NativeServer";
 
 export class Stack {
     config;

@@ -1,9 +1,9 @@
 import * as Handlebars from "handlebars";
 import * as fs from "fs";
-import {getTo, RoutingHttpHandler} from "http4js/dist/main/core/Routing";
-import {Response} from "http4js/dist/main/core/Response";
 import {FriendsService} from "./FriendsService";
 import {Friend} from "./Friend";
+import {RoutingHttpHandler, getTo} from "http4js/dist/core/Routing";
+import {Response} from "http4js/dist/core/Response";
 
 const render = (templateName, data) => {
     const source = fs.readFileSync(`./src/templates/${templateName}.hbs`).toString("utf8");

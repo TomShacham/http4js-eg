@@ -1,11 +1,11 @@
 import * as fs from "fs";
 import {App} from "../main/App";
-import {Request} from "http4js/dist/main/core/Request";
-import {Response} from "http4js/dist/main/core/Response";
-import {RoutingHttpHandler } from "http4js/dist/main/core/Routing";
 import {equal} from "assert";
 import {FakeFriendsDB} from "../main/FakeFriendsDB";
 import {FriendsService} from "../main/FriendsService";
+import {RoutingHttpHandler} from "http4js/dist/core/Routing";
+import {Request} from "http4js/dist/core/Request";
+import {Response} from "http4js/dist/core/Response";
 
 export class TestApp {
     routes: RoutingHttpHandler ;

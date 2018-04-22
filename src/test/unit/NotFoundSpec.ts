@@ -1,6 +1,6 @@
-import {Request} from "http4js/dist/main/core/Request";
 import {equal} from "assert";
 import {TestApp} from "../TestApp";
+import {Request} from "http4js/dist/core/Request";
 
 describe("unknown routes", () => {
 
