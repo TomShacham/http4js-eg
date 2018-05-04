@@ -50,7 +50,7 @@ export class App {
             .withHandler("/friends", "POST", async(req) => {
                 const newFriend = new Friend(req.bodyString().split("=")[1]);
                 const saved = await this.friends.add(newFriend);
-                return new Response(302).setHeader("Location", "/friends")
+                return new Response(302).withHeader("Location", "/friends")
             })
 
             .withFilter((handler) => (req) => {

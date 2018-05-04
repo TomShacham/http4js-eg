@@ -12,16 +12,16 @@ export class TestApp {
 
     constructor(){
         const fakeFriendsDB = new FakeFriendsDB();
-        const friendsService = new FriendsService(fakeFriendsDB);
-        this.routes = new App(friendsService).routes();
+        const fakeFriendsService = new FriendsService(fakeFriendsDB);
+        this.routes = new App(fakeFriendsService).routes();
     }
 
     async serve(req: Request): Promise<Response> {
-        return this.routes.match(req);
+        return this.routes.serve(req);
     }
 
     async approve(testFileName: string, req: Request) {
-        const actual1 = await this.routes.match(req);
+        const actual1 = await this.routes.serve(req);
         const actual = actual1.bodyString();
         const actualfilePath = `./src/test/resources/${testFileName}.actual`;
         fs.writeFileSync(actualfilePath, actual, "utf8");
