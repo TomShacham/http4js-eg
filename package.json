@@ -5,15 +5,15 @@
     "test": "mocha --require ts-node/register --watch-extensions ts,tsx 'src/test/**/*.{ts,tsx}'",
     "build": "tsc",
     "prepublishOnly": "tsc -p ./ --outDir dist/",
-    "app": "tsc; node index.js"
+    "start": "ts-node index.ts"
   },
   "dependencies": {
     "handlebars": "4.0.11",
-    "http4js": "1.4.1",
+    "http4js": "1.9.2",
+    "ts-node": "4.1.0",
     "pg": "7.4.1"
   },
   "devDependencies": {
-    "ts-node": "4.1.0",
     "typescript": "2.3.4",
     "@types/mocha": "2.2.47",
     "@types/handlebars": "4.0.36",

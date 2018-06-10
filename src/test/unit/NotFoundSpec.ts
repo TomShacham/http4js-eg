@@ -1,11 +1,11 @@
 import {equal} from "assert";
 import {TestApp} from "../TestApp";
-import {Request} from "http4js/dist/core/Request";
+import {Req} from "http4js/core/Request";
 
 describe("unknown routes", () => {
 
     it("404 page if no routes match", async () => {
-        let request = new Request("GET", "/unknown-route");
+        let request = Req("GET", "/unknown-route");
         let testApp = new TestApp();
 
         const response = await testApp.serve(request);
